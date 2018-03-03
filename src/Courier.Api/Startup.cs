@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Courier.Core.Services;
+using Courier.Api.Framework;
+using Courier.Core.Commands;
+using Courier.Core.Commands.Parcels;
 
 namespace Courier.Api
 {
@@ -27,6 +30,8 @@ namespace Courier.Api
             services.AddMvc();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IParcelService, ParcelService>();
+            services.AddTransient<ICommandHandler<CreateParcel>, CreateParcelHandler>();
+            services.AddSingleton<ICommandDispatcher>(new CommandDispatcher(services));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,16 +3,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Courier.Core.Commands;
 using Courier.Core.Services;
+using Courier.Api.Framework;
 
 namespace Courier.Api.Controllers
 {
     public class ParcelsController : ApiControllerBase
     {
         private readonly IParcelService parcelService;
+        private readonly ICommandDispatcher commandDispatcher;
 
-        public ParcelsController(IParcelService parcelService)
+        public ParcelsController(IParcelService parcelService, ICommandDispatcher commandDispatcher)
         {
             this.parcelService = parcelService;
+            this.commandDispatcher = commandDispatcher;
         }
 
         [HttpGet("{id}")]
@@ -48,7 +51,7 @@ namespace Courier.Api.Controllers
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] CreateParcel command)
         {
-            await parcelService.CreateAsync(command.Id, command.Name, command.SenderId, command.ReceiverId, command.ReceiverAddress);
+            await commandDispatcher.DispatchAsync(command);
 
             return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
         }
