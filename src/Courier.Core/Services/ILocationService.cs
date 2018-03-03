@@ -6,6 +6,6 @@ namespace Courier.Core.Services
     public interface ILocationService
     {
         Task<AddressDto> GetAsync(string address);
-
+        Task<bool> ExistsAsync(string address);
     }
 }

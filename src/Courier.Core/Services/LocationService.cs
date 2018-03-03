@@ -16,6 +16,9 @@ namespace Courier.Core.Services
             BaseAddress = apiUrl
         };
 
+        public async Task<bool> ExistsAsync(string address)
+            => await GetAsync(address) != null;
+
         public async Task<AddressDto> GetAsync(string address)
         {
             var response = await client.GetAsync($"?address={address}&key=AIzaSyD5UaNtOrvxjvxUJscB1qsCfHrPWv6UTtk");
