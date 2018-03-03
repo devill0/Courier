@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Courier.Core.Dto;
 using System.Linq;
+using Courier.Core.Queries;
 
 namespace Courier.Core.Services
 {
@@ -17,7 +18,7 @@ namespace Courier.Core.Services
             this.locationService = locationService;
         }
 
-        public async Task<IEnumerable<ParcelDto>> BrowseAsync()
+        public async Task<PagedResult<ParcelDto>> BrowseAsync(BrowseParcels query)
         {
             await Task.CompletedTask;
 
@@ -26,8 +27,8 @@ namespace Courier.Core.Services
                 Id = x.Id,
                 Name = x.Name,
                 SentAt = x.SentAt,
-                Received = x.RecivedAt.HasValue,              
-            });
+                Received = x.RecivedAt.HasValue,
+            }).Paginate(query);
         }
         public async Task<ParcelDetailsDto> GetAsync(Guid id)
         {

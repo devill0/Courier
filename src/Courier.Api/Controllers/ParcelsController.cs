@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Courier.Core.Commands;
 using Courier.Core.Services;
 using Courier.Api.Framework;
+using Courier.Core.Queries;
 
 namespace Courier.Api.Controllers
 {
@@ -31,9 +32,9 @@ namespace Courier.Api.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] BrowseParcels query)
         {            
-            return Ok(await parcelService.BrowseAsync());
+            return Ok(await parcelService.BrowseAsync(query));
         }
 
         [HttpGet("delivery-available/{address}")]
